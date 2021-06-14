@@ -7,7 +7,7 @@ const Sockets = require('./sockets');
 const cors = require('cors/');
 
 class Server {
-
+      
     constructor(){
 
         this.app = express();
@@ -19,6 +19,11 @@ class Server {
         // configuraciones de sockets
         this.io = socketio(this.server, { /* configuraciones */});
 
+        this.corsOptions = {
+            origin: 'https://socket-basic-demo.netlify.app/',
+            optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        }
+
     }
 
     middlewares(){
@@ -26,7 +31,7 @@ class Server {
         this.app.use( express.static(path.resolve(__dirname, '../public') ) );
 
         //CORS
-        this.app.use( cors() );
+        this.app.use( cors(this.corsOptions) );
     }
 
     socketsSettings(){
